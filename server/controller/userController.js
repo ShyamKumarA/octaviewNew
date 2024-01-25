@@ -132,6 +132,24 @@ export const viewAddFundPending = async (req, res, next) => {
   const userId = req.user._id;
   const userData = await User.findById(userId);
   try {
+    if(userData){
+      if (userData.addFundStatus=="pending"||userData.addPackageStatus=="pending") {
+        res.status(200).json({
+          userData,
+          sts: "01",
+          msg: "get Package Fund add pending user Success",
+        });
+      } else {
+        res.status(200).json({
+          sts: "01",
+          msg: "no pending data",
+        });
+      }
+
+    }else{
+      return next(errorHandler(401, "User Login Failed"));
+
+    }
     if (userData.addFundStatus=="pending"||userData.addPackageStatus=="pending") {
       res.status(200).json({
         userData,

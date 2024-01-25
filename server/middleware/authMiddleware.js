@@ -26,9 +26,6 @@ import asyncHandler from "express-async-handler"
 
 export const protectUser = asyncHandler(async (req, res, next) => {
   let token;
-  const { id } = req.params;
-  console.log(id);
-
   
   if (
     req.headers.authorization && req.headers.authorization.startsWith("Bearer")
@@ -37,10 +34,14 @@ export const protectUser = asyncHandler(async (req, res, next) => {
       token = req.headers.authorization.split(" ")[1];
 
       const decoded = jwt.verify(token, "Shyam");
-
       req.user = await User.findById(decoded.userId).select("-password");
-
-      next();
+      console.log(token);
+      if (token) {
+        next(); 
+      }else{
+        res.status(401);
+        throw new Error("Not authenticated, No token");
+      }
     } catch (error) {
       console.error(error);
       res.status(401);
@@ -48,8 +49,29 @@ export const protectUser = asyncHandler(async (req, res, next) => {
     }
   }
 
-  if (!token) {
-    res.status(401);
-    throw new Error("Not authenticated, No token");
-  }
+ 
 });
+
+// export const protectUser = asyncHandler(async (req, res, next) => {
+//   let token;
+
+//   if (
+//     req.headers.authorization && req.headers.authorization.startsWith("Bearer")
+//   ) {
+//     try {
+//       token = req.headers.authorization.split(" ")[1];
+
+//       const decoded = jwt.verify(token, "Shyam");
+//       req.user = await User.findById(decoded.userId).select("-password");
+//       console.log(token);
+//       next(); // Call next() only if the token is successfully verified
+//     } catch (error) {
+//       console.error(error);
+//       res.status(401);
+//       throw new Error("Not authenticated, token failed");
+//     }
+//   } else {
+//     res.status(401);
+//     throw new Error("Not authenticated, No token");
+//   }
+// });

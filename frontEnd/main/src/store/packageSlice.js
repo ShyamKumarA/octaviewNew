@@ -17,7 +17,6 @@ export const packageManage = createAsyncThunk('packageManage', async() => {
 
   const response = await axios.get(`${URL}/api/admin/view-addPackageFund-pending`, config);
 
-  console.log(response.data);
   return response.data;
 })
 
@@ -60,7 +59,7 @@ export const Acceptpackage = createAsyncThunk('Acceptpackage', async(id) => {
     },
   };
   
-  const response = await axios.post(`${URL}/api/admin/user-package-approval/${id}`, config);
+  const response = await axios.post(`${URL}/api/admin/user-package-approval/${id}`, {},config);
 
   console.log(response);
   return response.data;

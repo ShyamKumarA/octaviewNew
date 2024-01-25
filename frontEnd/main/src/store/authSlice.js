@@ -5,17 +5,18 @@ import URL from "../Constant";
 // Redux action to get user
 export const fetchUser = createAsyncThunk("fetchUser", async (data) => {
   const { email, password } = data;
-  
   const config = {
     headers: { "content-type": "application/json" },
   };
+
+  
 
   const response = await axios.post(
     `${URL}/api/admin/admin-login`,
     { email, password },
     config
   );
-  
+  console.log(response.data);
   return response.data;
 });
 

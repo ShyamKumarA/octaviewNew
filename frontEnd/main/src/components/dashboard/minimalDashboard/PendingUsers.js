@@ -1,81 +1,42 @@
 /* eslint-disable no-underscore-dangle */
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Card, CardBody, CardTitle, Input, Table } from 'reactstrap';
-import ModalImage from "react-modal-image";
-import {  userManage } from '../../../store/userSlice';
-
-// const tableData = [
-//   {
-//     id: 1,
-//     name: 'Elite admin',
-//     status: 'sale',
-//     date: '35',
-//     price: '$24',
-//   },
-//   {
-//     id: 2,
-//     name: 'Real Homes',
-//     status: 'extended',
-//     date: '35',
-//     price: '$1250',
-//   },
-//   {
-//     id: 3,
-//     name: 'Ample Admin',
-//     status: 'extended',
-//     date: '35',
-//     price: '-$24',
-//   },
-//   {
-//     id: 4,
-//     name: 'Medical Pro',
-//     status: 'tax',
-//     date: '35',
-//     price: '$24',
-//   },
-//   {
-//     id: 5,
-//     name: 'Hosting press html',
-//     status: 'sale',
-//     date: '35',
-//     price: '$1250',
-//   },
-//   {
-//     id: 6,
-//     name: 'Digital Agency PSD',
-//     status: 'sale',
-//     date: '35',
-//     price: '$64',
-//   },
-//   {
-//     id: 7,
-//     name: 'Helping Hands',
-//     status: 'member',
-//     date: '35',
-//     price: '-$14',
-//   },
-//   {
-//     id: 8,
-//     name: 'Ample Admin',
-//     status: 'extended',
-//     date: '35',
-//     price: '$1250',
-//   },
-// ];
+import { Button, Card, CardBody, CardTitle, Input, Table, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import ModalImage from 'react-modal-image';
+import { AcceptUserManage, userManage } from '../../../store/userSlice';
 
 const PendingUsers = () => {
   const dispatch = useDispatch();
-
   const { data } = useSelector((state) => state.userManageReducer);
+  const { data: acceptData } = useSelector((state) => state.AcceptUserManageReducer);
+
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
   useEffect(() => {
     dispatch(userManage());
-  }, [dispatch])
-  
-// const acceptHandler=(id)=>{
-//   dispatch(Acceptpackage(id))
-// }
+  }, [dispatch, acceptData]);
+
+  const acceptHandler = (id) => {
+    setSelectedUserId(id);
+    setShowConfirmationModal(true);
+  };
+
+  const handleCloseConfirmationModal = () => {
+    setShowConfirmationModal(false);
+  };
+
+  const handleConfirmAcceptance = () => {
+    dispatch(AcceptUserManage(selectedUserId));
+    setShowConfirmationPopup(true);
+    setShowConfirmationModal(false);
+  };
+
+  const handlePopupClose = () => {
+    setShowConfirmationPopup(false);
+  };
+
 
   return (
     <Card>
@@ -140,8 +101,8 @@ const PendingUsers = () => {
                       ) }
                     </td>
                 <td>
-                <Button className="btn m-2"  color="success">
-                {/* onClick={() => acceptHandler(tdata._id)} */}
+                <Button className="btn m-2"  color="success" onClick={() => acceptHandler(tdata._id)}>
+                
                 Accept
               </Button>
               <Button className="btn" color="danger">
@@ -153,6 +114,27 @@ const PendingUsers = () => {
           </tbody>
         </Table>
       </div>
+       {/* Confirmation Modal */}
+       <Modal isOpen={showConfirmationModal} toggle={handleCloseConfirmationModal}>
+        <ModalHeader toggle={handleCloseConfirmationModal}>Confirm Acceptance</ModalHeader>
+        <ModalBody>
+          Are you sure you want to accept this user?
+        </ModalBody>
+        <ModalFooter>
+          <Button color="secondary" onClick={handleCloseConfirmationModal}>Cancel</Button>
+          <Button color="success" onClick={handleConfirmAcceptance}>Confirm</Button>
+        </ModalFooter>
+      </Modal>
+
+      {/* Confirmation Popup */}
+      <Modal isOpen={showConfirmationPopup} toggle={handlePopupClose}>
+        <ModalBody>
+          User accepted successfully!
+        </ModalBody>
+        <ModalFooter>
+          <Button color="success" onClick={handlePopupClose}>Close</Button>
+        </ModalFooter>
+      </Modal>
     </Card>
   );
 };

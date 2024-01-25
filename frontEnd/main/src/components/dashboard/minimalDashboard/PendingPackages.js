@@ -1,22 +1,40 @@
 /* eslint-disable no-underscore-dangle */
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Card, CardBody, CardTitle, Input, Table } from 'reactstrap';
+import { Button, Card, CardBody, CardTitle, Input, Table, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { Acceptpackage, packageManage } from '../../../store/packageSlice';
-
 
 const PendingPackages = () => {
   const dispatch = useDispatch();
-
   const { data } = useSelector((state) => state.packageManageReducer);
+  const { data: acceptData } = useSelector((state) => state.acceptPackageReducer);
+
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
+  const [selectedPackageId, setSelectedPackageId] = useState(null);
 
   useEffect(() => {
     dispatch(packageManage());
-  }, [dispatch])
-  
-const acceptHandler=(id)=>{
-  dispatch(Acceptpackage(id))
-}
+  }, [dispatch, acceptData]);
+
+  const acceptHandler = (id) => {
+    setSelectedPackageId(id);
+    setShowConfirmationModal(true);
+  };
+
+  const handleCloseConfirmationModal = () => {
+    setShowConfirmationModal(false);
+  };
+
+  const handleConfirmAcceptance = () => {
+    dispatch(Acceptpackage(selectedPackageId));
+    setShowConfirmationPopup(true);
+    setShowConfirmationModal(false);
+  };
+
+  const handlePopupClose = () => {
+    setShowConfirmationPopup(false);
+  };
 
   return (
     <Card>
@@ -59,7 +77,7 @@ const acceptHandler=(id)=>{
             {data && data.userData.map((tdata, index) => (
               <tr key={tdata.email} className="border-top">
                 <td>
-                  <h6 className="mb-0">{index+1}</h6>
+                  <h6 className="mb-0">{index + 1}</h6>
                 </td>
                 <td>
                   <h6 className="mb-0">{tdata.username}</h6>
@@ -67,18 +85,40 @@ const acceptHandler=(id)=>{
                 <td>{tdata.phone}</td>
                 <td>{tdata.topUpAmount}</td>
                 <td>
-                <Button className="btn m-2" onClick={() => acceptHandler(tdata._id)} color="success">
-                Accept
-              </Button>
-              <Button className="btn" color="danger">
-                Reject
-              </Button>
+                  <Button className="btn m-2" onClick={() => acceptHandler(tdata._id)} color="success">
+                    Accept
+                  </Button>
+                  <Button className="btn" color="danger">
+                    Reject
+                  </Button>
                 </td>
               </tr>
             ))}
           </tbody>
         </Table>
       </div>
+
+      {/* Confirmation Modal */}
+      <Modal isOpen={showConfirmationModal} toggle={handleCloseConfirmationModal}>
+        <ModalHeader toggle={handleCloseConfirmationModal}>Confirm Acceptance</ModalHeader>
+        <ModalBody>
+          Are you sure you want to accept this package?
+        </ModalBody>
+        <ModalFooter>
+          <Button color="secondary" onClick={handleCloseConfirmationModal}>Cancel</Button>
+          <Button color="success" onClick={handleConfirmAcceptance}>Confirm</Button>
+        </ModalFooter>
+      </Modal>
+
+      {/* Confirmation Popup */}
+      <Modal isOpen={showConfirmationPopup} toggle={handlePopupClose}>
+        <ModalBody>
+          Package accepted successfully!
+        </ModalBody>
+        <ModalFooter>
+          <Button color="success" onClick={handlePopupClose}>Close</Button>
+        </ModalFooter>
+      </Modal>
     </Card>
   );
 };

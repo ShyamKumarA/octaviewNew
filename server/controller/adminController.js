@@ -5,6 +5,33 @@ import { errorHandler } from "../middleware/errorHandler.js";
 import Package from "../models/packageModel.js";
 import { findPackage, generateRandomString, generateReferalIncome } from "./userController.js";
 
+
+
+
+
+//Dashboard data
+
+export const dashboardData=async(req,res)=>{
+  try {
+    const today = new Date();
+    const userData=await User.find();
+    const totalMembers=userData.length;
+    const todaysUsers = userData.filter(user => {
+      const userCreatedAt = new Date(user.createdAt);
+      return userCreatedAt >= today;
+    });
+    const todaysUserCount=todaysUsers.length;
+    const totalDailyROI = userData.reduce((total, user) => {
+      return total + user.dailyROI;
+    }, 0);
+
+
+  } catch (error) {
+    
+  }
+
+}
+
 //add admin Api
 
 export const addAdmin = async (req, res, next) => {
@@ -50,7 +77,7 @@ export const adminLogin = async (req, res, next) => {
       }
       const token = jwt.sign(
         { userId: validAdmin._id },
-        process.env.JWT_SECRET,
+        "Shyam",
         {
           expiresIn: "365d",
         }
@@ -607,6 +634,8 @@ export const userPackageApproval=async(req,res,next)=>{
         userData.transactionCode='';
         const updatedUser = await userData.save();
         if (updatedUser) {
+          packageData.PackageUsed.push(updatedUser._id)
+            await packageData.save();
           if(sponserUser3){
             sponserUser3.childLevel3.push(updatedUser._id);
             await sponserUser3.save();

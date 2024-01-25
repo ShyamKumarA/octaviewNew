@@ -1,17 +1,22 @@
+/* eslint-disable no-underscore-dangle */
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Card, CardBody, CardTitle, Input, Table } from 'reactstrap';
-import { userListManage } from '../../../store/userSlice';
+import { userListManage,userTreeListManage } from '../../../store/userSlice';
 
 const UserList = () => {
   const dispatch = useDispatch();
   const { data } = useSelector((state) => state.userListManageReducer);
-
+  
   const [selectedChild, setSelectedChild] = useState('child1');
 
   useEffect(() => {
     dispatch(userListManage());
   }, [dispatch]);
+
+  const acceptHandler=(id)=>{
+    dispatch(userTreeListManage(id))
+  }
 
   const getChildData = () => {
     if (!data) return []; // Add a null check for data
@@ -72,7 +77,7 @@ const UserList = () => {
             </tr>
           </thead>
           <tbody>
-        {getChildData().map((tdata, index) => (
+        {data && getChildData().map((tdata, index) => (
           <tr key={tdata.email} className="border-top">
                 <td>
                   <h6 className="mb-0">{index+1}</h6>
@@ -85,7 +90,8 @@ const UserList = () => {
                 <td><h6 className="mb-0">{tdata.ownSponserId}</h6></td>
 
                 <td>
-                <Button className="btn "  color="success">
+               
+                <Button className="btn "  color="success" onClick={() => acceptHandler(tdata._id)}>
                 View Tree
               </Button>
               

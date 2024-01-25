@@ -134,27 +134,54 @@ export const walletWithdrawReport=async(req,res,next)=>{
 }
 
 //fund add history
-export const addFundHistory=async(req,res,next)=>{
+export const addFundHistory = async (req, res, next) => {
   const userId = req.user._id;
-try {
-  const userData = await User.findById(userId).populate("addFundHistory")
-  if (userData) {
-    const addFundHistory=userData.addFundHistory
-    //.select("username email phone walletWithdrawStatus walletWithdrawAmount");
-    res.status(200).json({
-      addFundHistory,
-      packagename:userData.packageName,
-      totalCapitalAmount:userData.packageAmount,
-      sts: "01",
-      msg: "get wallet withdrawal report users Success",
-    });
-  } else {
-    return next(errorHandler(401, "User Login Failed"));
+
+  try {
+    const userData = await User.findById(userId).populate("addFundHistory");
+    const arrayOfUsers=[];
+    const newUserData={
+      "name":userData.username,
+      "topUpAmount":userData.topUpAmount,
+      "status":userData.addPackageStatus
+    }
+    arrayOfUsers.push(newUserData);
+    if (userData) {
+      const addFundHistory = userData.addFundHistory || [];
+      console.log(addFundHistory);
+
+
+
+      const allFundHistory = [
+        ...arrayOfUsers,
+        ...addFundHistory,
+      ];
+
+      if (userData.addFundStatus == "pending" || userData.addPackageStatus == "pending") {
+        res.status(200).json({
+          allFundHistory,
+          packagename: userData.packageName,
+          totalCapitalAmount: userData.packageAmount,
+          sts: "01",
+          msg: "get Package Fund add pending user Success",
+        });
+      } else {
+        res.status(200).json({
+          addFundHistory,
+          packagename: userData.packageName,
+          totalCapitalAmount: userData.packageAmount,
+          sts: "01",
+          msg: "get Package Fund add pending user Success",
+        });
+      }
+    } else {
+      return next(errorHandler(401, "User Login Failed"));
+    }
+  } catch (error) {
+    next(error);
   }
-} catch (error) {
-  next(error);
-}
-} 
+};
+
 
 
 //capital withdraw report

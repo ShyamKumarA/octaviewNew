@@ -1,5 +1,5 @@
 import express from "express"
-import {  addPackageByUser, addReferalUser, addUser, capitalWithdraw, changePassword, changeTxnPassword, editProfile, getaddPackageByUser, userLogin, verifyUser, viewAllPackage, viewAllTransactions, viewChilds, viewUserPackageDetails, viewUserProfile, walletWithdraw } from "../controller/userController.js"
+import {  addPackageByUser, addReferalUser, addUser, capitalWithdraw, changePassword, changeTxnPassword, editProfile, getaddPackageByUser, userLogin, verifyUser, viewAddFundPending, viewAllPackage, viewAllTransactions, viewChilds, viewUserPackageDetails, viewUserProfile, walletWithdraw } from "../controller/userController.js"
 import { protectUser } from "../middleware/authMiddleware.js"
 import { addFundHistory, capitalWithdrawReport, dailyROIReport, directIncomeReport, level1IncomeReport,level2IncomeReport,level3IncomeReport, walletWithdrawReport } from "../controller/reportController.js"
 

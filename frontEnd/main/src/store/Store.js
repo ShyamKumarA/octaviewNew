@@ -9,6 +9,8 @@ import TicketReducer from './apps/ticket/TicketSlice';
 import userLoginReducer from './authSlice';
 import { packageManageReducer, acceptPackageReducer,} from './packageSlice';
 import { userManageReducer,userListManageReducer } from './userSlice';
+import splitRoiReducer  from './roiSlice';
+
 
 
 export const store = configureStore({
@@ -24,7 +26,8 @@ export const store = configureStore({
     packageManageReducer,
     userManageReducer,
     acceptPackageReducer,
-    userListManageReducer
+    userListManageReducer,
+    splitRoiReducer
     
   },
 });

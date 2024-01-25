@@ -26,6 +26,9 @@ import asyncHandler from "express-async-handler"
 
 export const protectUser = asyncHandler(async (req, res, next) => {
   let token;
+  const { id } = req.params;
+  console.log(id);
+
   
   if (
     req.headers.authorization && req.headers.authorization.startsWith("Bearer")

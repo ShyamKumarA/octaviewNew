@@ -227,7 +227,6 @@ const userSchema=new mongoose.Schema({
     },
     addFundStatus:{
       type: String,
-      enum: ["pending", "approved"],
     },
     addPackageStatus:{
       type: String

@@ -4,64 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, Card, CardBody, CardTitle, Input, Table } from 'reactstrap';
 import { Acceptpackage, packageManage } from '../../../store/packageSlice';
 
-// const tableData = [
-//   {
-//     id: 1,
-//     name: 'Elite admin',
-//     status: 'sale',
-//     date: '35',
-//     price: '$24',
-//   },
-//   {
-//     id: 2,
-//     name: 'Real Homes',
-//     status: 'extended',
-//     date: '35',
-//     price: '$1250',
-//   },
-//   {
-//     id: 3,
-//     name: 'Ample Admin',
-//     status: 'extended',
-//     date: '35',
-//     price: '-$24',
-//   },
-//   {
-//     id: 4,
-//     name: 'Medical Pro',
-//     status: 'tax',
-//     date: '35',
-//     price: '$24',
-//   },
-//   {
-//     id: 5,
-//     name: 'Hosting press html',
-//     status: 'sale',
-//     date: '35',
-//     price: '$1250',
-//   },
-//   {
-//     id: 6,
-//     name: 'Digital Agency PSD',
-//     status: 'sale',
-//     date: '35',
-//     price: '$64',
-//   },
-//   {
-//     id: 7,
-//     name: 'Helping Hands',
-//     status: 'member',
-//     date: '35',
-//     price: '-$14',
-//   },
-//   {
-//     id: 8,
-//     name: 'Ample Admin',
-//     status: 'extended',
-//     date: '35',
-//     price: '$1250',
-//   },
-// ];
 
 const PendingPackages = () => {
   const dispatch = useDispatch();

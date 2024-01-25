@@ -128,6 +128,24 @@ export const generateReferalIncome = async (userId,id, capitalAmount,transaction
   
 };
 
+export const viewAddFundPending = async (req, res, next) => {
+  const userId = req.user._id;
+  const userData = await User.findById(userId);
+  try {
+    if (userData.addFundStatus=="pending"||userData.addPackageStatus=="pending") {
+      res.status(200).json({
+        userData,
+        sts: "01",
+        msg: "get Package Fund add pending user Success",
+      });
+    } else {
+      return next(errorHandler(401, "User Login Failed"));
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 //add user by user and admin
 
 export const addUser = async (req, res, next) => {

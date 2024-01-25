@@ -10,9 +10,19 @@ import {
   ModalBody,
   ModalFooter,
 } from 'reactstrap';
+import { useDispatch } from 'react-redux';
+import { splitRoi } from '../../../store/roiSlice';
 import ComponentCard from '../../ComponentCard';
 
+
 const BasicForm = () => {
+
+  const dispatch = useDispatch();
+  
+
+
+
+
   const [percentage, setPercentage] = useState('');
   const [modal, setModal] = useState(false);
   const [validationModal, setValidationModal] = useState(false);
@@ -25,10 +35,11 @@ const BasicForm = () => {
 
     // Perform validation on the entered percentage value
     const isValidPercentage = parseFloat(percentage) >= 0.4 && parseFloat(percentage) <= 1.4;
-
     if (isValidPercentage) {
       // Show confirmation modal
       toggleModal();
+dispatch(splitRoi(isValidPercentage))
+
     } else {
       // Show validation error modal
       toggleValidationModal();
@@ -36,7 +47,7 @@ const BasicForm = () => {
   };
 
   return (
-    <div className="d-flex align-items-center justify-content-center" style={{ height: '100%' }}>
+    <div className="d-flex align-items-center justify-content-center" style={{ height: '100%', width:"100%"}}>
       <ComponentCard title={<span style={{ color: 'red', fontWeight: 'bold' }}>Split Todays ROI</span>}>
         <Form onSubmit={handleSubmit}>
           <FormGroup>

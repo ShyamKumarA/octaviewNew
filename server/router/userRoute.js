@@ -30,6 +30,8 @@ router.get("/view-ROIIncome-Report",protectUser,dailyROIReport)
 router.get("/wallet-Withdraw-Report",protectUser,walletWithdrawReport)
 router.get("/capital-Withdraw-Report",protectUser,capitalWithdrawReport)
 router.get("/addfundHistory",protectUser,addFundHistory)
+router.get("/view-addfund-pending",protectUser,viewAddFundPending)
+
 
 
 

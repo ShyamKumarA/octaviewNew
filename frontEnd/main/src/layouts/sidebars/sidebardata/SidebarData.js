@@ -30,6 +30,13 @@ const SidebarData = [
     collapisble: false,
   },
   {
+    title: 'Pending Topups',
+    href: '/accept-topups',
+    icon: <Icon.User />,
+    id: 10.5,
+    collapisble: false,
+  },
+  {
     title: 'Split Daily ROI',
     href: '/roi-split',
     icon: <Icon.User />,

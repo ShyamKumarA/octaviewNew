@@ -598,17 +598,11 @@ export const viewUserPackageDetails=async(req,res,next)=>{
     const userData=await User.findById(userId)
     try {
       if(userData){
-        const {password,newPassword}=req.body;
-      if (password) {
-        const validPassword = bcryptjs.compareSync(password, userData.password);
-        if (!validPassword) {
-          return next(errorHandler(401, "Wrong Password"));
-        } else {
+        const {newPassword,confirmPassword}=req.body;
+      if (newPassword) {
           const hashedPassword = bcryptjs.hashSync(newPassword, 10);
           userData.password = hashedPassword;
         }
-      }
-
        const updatedUser = await userData.save();
 
       res
@@ -633,17 +627,11 @@ export const viewUserPackageDetails=async(req,res,next)=>{
     const userData=await User.findById(userId)
     try {
       if(userData){
-        const {password,newPassword}=req.body;
-      if (password) {
-        const validPassword = bcryptjs.compareSync(password, userData.password);
-        if (!validPassword) {
-          return next(errorHandler(401, "Wrong Password"));
-        } else {
+        const {newPassword,confirmPassword}=req.body;
+      if (newPassword) {
           const hashedPassword = bcryptjs.hashSync(newPassword, 10);
           userData.password = hashedPassword;
         }
-      }
-
        const updatedUser = await userData.save();
 
       res
@@ -694,6 +682,7 @@ export const viewUserPackageDetails=async(req,res,next)=>{
       const userData=await User.findById(userId)
       if(userData){
         if(userData.addPackageStatus=="approved"){
+    console.log(amount);
         userData.addFundStatus = "pending";
         }else{
           userData.addPackageStatus ="pending";

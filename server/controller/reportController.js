@@ -143,12 +143,12 @@ export const addFundHistory = async (req, res, next) => {
     const newUserData={
       "name":userData.username,
       "topUpAmount":userData.topUpAmount,
+      "transactionCode":userData.transactionCode,
       "status":userData.addPackageStatus
     }
     arrayOfUsers.push(newUserData);
     if (userData) {
       const addFundHistory = userData.addFundHistory || [];
-      console.log(addFundHistory);
 
 
 
@@ -156,6 +156,8 @@ export const addFundHistory = async (req, res, next) => {
         ...arrayOfUsers,
         ...addFundHistory,
       ];
+      console.log(allFundHistory);
+
 
       if (userData.addFundStatus == "pending" || userData.addPackageStatus == "pending") {
         res.status(200).json({

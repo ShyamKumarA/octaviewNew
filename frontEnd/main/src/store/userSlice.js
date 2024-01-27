@@ -140,6 +140,7 @@ export const acceptUserSlice = createSlice({
 
 
 export const userTreeListManage = createAsyncThunk('userTreeListManage', async(id) => {
+  console.log(id);
   const userData = localStorage.getItem("userInfo");
   const parsedUserData = JSON.parse(userData);
   const token = parsedUserData.access_token;

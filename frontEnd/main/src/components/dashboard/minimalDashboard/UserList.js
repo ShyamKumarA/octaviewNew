@@ -1,8 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Button, Card, CardBody, CardTitle, Input, Table } from 'reactstrap';
-import { userListManage,userTreeListManage } from '../../../store/userSlice';
+import { userListManage } from '../../../store/userSlice';
 
 const UserList = () => {
   const dispatch = useDispatch();
@@ -14,9 +15,6 @@ const UserList = () => {
     dispatch(userListManage());
   }, [dispatch]);
 
-  const acceptHandler=(id)=>{
-    dispatch(userTreeListManage(id))
-  }
 
   const getChildData = () => {
     if (!data) return []; // Add a null check for data
@@ -71,14 +69,15 @@ const UserList = () => {
               <th>#</th>
               <th>Name</th>
               <th>Package</th>
-              <th>Amount</th>
+              <th>Mobile</th>
               <th>Sponser</th>
               <th>Action</th>
+              <th>Details</th>
             </tr>
           </thead>
           <tbody>
         {data && getChildData().map((tdata, index) => (
-          <tr key={tdata.email} className="border-top">
+          <tr key={tdata._id} className="border-top">
                 <td>
                   <h6 className="mb-0">{index+1}</h6>
                 </td>
@@ -90,11 +89,24 @@ const UserList = () => {
                 <td><h6 className="mb-0">{tdata.ownSponserId}</h6></td>
 
                 <td>
-               
-                <Button className="btn "  color="success" onClick={() => acceptHandler(tdata._id)}>
+                <Link
+                                to={`/users-tree-list/${tdata._id}`}
+                                className="hidden xs:block ml-2"
+                              >
+                <Button className="btn"  color="success">
                 View Tree
               </Button>
-              
+              </Link>
+              </td>
+              <td>
+              <Link
+                                to={`/user-details/${tdata._id}`}
+                                className="hidden xs:block ml-2"
+                              >
+              <Button className="btn "  color="info">
+                View Details
+              </Button>
+              </Link>
                 </td>
               </tr>
             ))}

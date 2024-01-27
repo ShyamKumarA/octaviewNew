@@ -266,7 +266,8 @@ export const rejectUser = async (req, res, next) => {
       if (adminData.isSuperAdmin) {
         const userData = await User.find({
           addFundStatus: { $eq: "pending" },
-        }).select("username email phone userStatus");
+          isSuperAdmin: { $ne: true } 
+        }).select("username email phone userStatus createdAt topUpAmount");
         res.status(200).json({
           userData,
           sts: "01",
@@ -290,6 +291,7 @@ export const rejectUser = async (req, res, next) => {
         if (adminData.isSuperAdmin) {
           const userData = await User.find({
             addPackageStatus: { $eq: "pending" },
+            isSuperAdmin: { $ne: true } 
           }).select("username email phone userStatus createdAt topUpAmount");
           res.status(200).json({
             userData,
@@ -674,10 +676,11 @@ export const userPackageApproval=async(req,res,next)=>{
 //admin Reject initial package
 
 export const userPackageReject=async(req,res,next)=>{
+console.log("reached here");
+
   try{
     const adminId = req.user._id;
     const { id } = req.params;
-
     const adminData = await User.findById(adminId);
     if (adminData.isSuperAdmin) {
       const userData = await User.findById(id);
@@ -689,11 +692,15 @@ export const userPackageReject=async(req,res,next)=>{
       // const packageChosen = findPackage(newPackageAmount);
       // const packageData = await Package.findOne({ name: packageChosen });
       if (userData) {
-        userData.addPackageStatus = "";
-        userData.referalStatus="";
-        // userData.packageAmount=newPackageAmount;
-        // userData.packageChosen=packageData._id;
-        // userData.transactionCode=transactionCode
+        if(userData.addPackageStatus=="pending"){
+          userData.addPackageStatus = "";
+          userData.referalStatus="";
+        }
+        if(userData.addFundStatus=="pending"){
+          userData.addFundStatus = "";
+        }
+        
+        
         userData.addFundHistory.push({
           topUpAmount:amountToAdd,
           status:"Rejected",
@@ -705,7 +712,7 @@ export const userPackageReject=async(req,res,next)=>{
         const updatedUser = await userData.save();
         if (updatedUser) {
           // const referalIncome=generateReferalIncome(id,sponserId,updatedUser.packageAmount)
-          res.status(200).json({updatedUser, msg: "New package added Rejected! Referal amount approved!" });
+          res.status(200).json({updatedUser, msg: "New Fund added Rejected! Referal amount rejected!" });
         }
       } else {
         next(errorHandler("User not Found"));
@@ -720,3 +727,4 @@ export const userPackageReject=async(req,res,next)=>{
   }
 
 }
+

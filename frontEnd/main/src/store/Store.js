@@ -7,7 +7,7 @@ import EmailReducer from './apps/email/EmailSlice';
 import TicketReducer from './apps/ticket/TicketSlice';
 
 import userLoginReducer from './authSlice';
-import { packageManageReducer, acceptPackageReducer,} from './packageSlice';
+import { packageManageReducer, acceptPackageReducer,acceptTopupReducer,topupManageReducer,rejectPackageReducer,rejectTopupReducer} from './packageSlice';
 import { userManageReducer,userListManageReducer,AcceptUserManageReducer,userTreeListManageReducer } from './userSlice';
 import splitRoiReducer  from './roiSlice';
 
@@ -26,10 +26,14 @@ export const store = configureStore({
     packageManageReducer,
     userManageReducer,
     acceptPackageReducer,
+    rejectPackageReducer,
     userListManageReducer,
     splitRoiReducer,
     AcceptUserManageReducer,
-    userTreeListManageReducer
+    userTreeListManageReducer,
+    acceptTopupReducer,
+    rejectTopupReducer,
+    topupManageReducer
     
   },
 });

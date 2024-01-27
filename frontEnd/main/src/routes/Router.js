@@ -8,7 +8,10 @@ import Loadable from '../layouts/loader/Loadable';
 const AcceptPackage = Loadable(lazy(() => import('../views/dashboards/AcceptPackages')));
 const AcceptUsers = Loadable(lazy(() => import('../views/dashboards/AcceptUsers')));
 const UsersList = Loadable(lazy(() => import('../views/dashboards/UsersList')));
+const ViewUserTree = Loadable(lazy(() => import('../views/dashboards/ViewUserTree')));
 const ROISplit = Loadable(lazy(() => import('../views/dashboards/UserROISplit')));
+const AcceptTopups = Loadable(lazy(() => import('../views/dashboards/AcceptTopups')));
+
 
 
 
@@ -129,7 +132,10 @@ const ThemeRoutes = [
       { path: '/accept-packages', name: 'AcceptPackages', exact: true, element: <AcceptPackage /> },
       { path: '/accept-users', name: 'AcceptUsers', exact: true, element: <AcceptUsers /> },
       {path: '/users-list', name: 'UsersList',exact: true, element: <UsersList />},
+      {path: '/users-tree-list/:userId', name: 'ViewUserTree',exact: true, element: <ViewUserTree />},
       { path: '/roi-split', name: 'ROISplit', exact: true, element: <ROISplit /> },
+      { path: '/accept-topups', name: 'AcceptTopups', exact: true, element: <AcceptTopups /> },
+
 
 
 

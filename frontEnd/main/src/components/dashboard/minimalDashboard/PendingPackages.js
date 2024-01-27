@@ -2,12 +2,14 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Card, CardBody, CardTitle, Input, Table, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { Acceptpackage, packageManage } from '../../../store/packageSlice';
+import { Acceptpackage, packageManage,Rejectpackage } from '../../../store/packageSlice';
 
 const PendingPackages = () => {
   const dispatch = useDispatch();
   const { data } = useSelector((state) => state.packageManageReducer);
   const { data: acceptData } = useSelector((state) => state.acceptPackageReducer);
+  const { data: rejectData } = useSelector((state) => state.rejectPackageReducer);
+
 
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
@@ -15,12 +17,16 @@ const PendingPackages = () => {
 
   useEffect(() => {
     dispatch(packageManage());
-  }, [dispatch, acceptData]);
+  }, [dispatch, acceptData,rejectData]);
 
   const acceptHandler = (id) => {
     setSelectedPackageId(id);
     setShowConfirmationModal(true);
   };
+
+  const rejectHandler=(id)=>{
+    dispatch(Rejectpackage(id))
+  }
 
   const handleCloseConfirmationModal = () => {
     setShowConfirmationModal(false);
@@ -88,7 +94,7 @@ const PendingPackages = () => {
                   <Button className="btn m-2" onClick={() => acceptHandler(tdata._id)} color="success">
                     Accept
                   </Button>
-                  <Button className="btn" color="danger">
+                  <Button className="btn" color="danger" onClick={() => rejectHandler(tdata._id)}>
                     Reject
                   </Button>
                 </td>

@@ -149,6 +149,60 @@ export const viewAllUsers = async (req, res, next) => {
   }
 };
 
+//View Profile by params userId
+
+export const viewUserDetails = async (req, res, next) => {
+
+  const {id}=req.params;
+  const adminId = req.user._id;
+  try {
+    const userData = await User.findById(id).populate("packageChosen");
+    let packageName;
+    const packageData=userData.packageChosen;
+    if(packageData){
+    packageName=packageData.name;
+    }else{
+      packageName=null;
+    }
+
+    const countFirstChild=userData.childLevel1.length;
+    const countSecondChild=userData.childLevel1.length;
+    const countThreeChild=userData.childLevel1.length;
+    const totalLevelRoi=userData.level1ROI+userData.level2ROI+userData.level3ROI;
+
+    // .select(
+    //   "username ownSponserId email phone userStatus packageAmount"
+    // );
+    if (userData) {
+      res.status(200).json({
+        id: userData._id,
+        userStatus: userData.userStatus,
+        ownSponserId: userData.ownSponserId,
+        packageName:packageName,
+        name: userData.username,
+        email: userData.email,
+        phone: userData.phone,
+        address: userData.address,
+        dailyBonus:userData.dailyROI,
+        levelRoi:totalLevelRoi,
+        transactionCode:userData.transactionCode,
+        // packageChosen: user.packageChosen,
+        capitalAmount:userData.packageAmount,
+        myDownline:countFirstChild,
+        directIncome:userData.referalIncome,
+        totalIncome:userData.walletAmount,
+        sts: "01",
+        msg: "get user profile Success",
+      });
+    } else {
+      next(errorHandler("User not found"));
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 //View approved (verified) users
 
 export const getApprovedUsers = async (req, res, next) => {

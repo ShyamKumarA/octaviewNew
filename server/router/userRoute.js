@@ -37,9 +37,9 @@ router.get("/view-addfund-pending",protectUser,viewAddFundPending)
 
 //register via referal link
 
-router.get("/add-user",addReferalUser)
+// router.get("/add-referal-user",addReferalUser)
 
-router.post("/add-user",addReferalUser)
+router.post("/add-referal-user",addReferalUser)
 
 
 

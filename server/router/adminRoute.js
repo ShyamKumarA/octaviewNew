@@ -1,6 +1,6 @@
 import express from "express"
 import { protectUser } from "../middleware/authMiddleware.js"
-import { acceptUser, addAdmin, addPackage, adminLogin, approveCapitalwithdrawal, approveFundAdd, approveWalletWithdrawal, getApprovedUsers, getReadyToApproveUsers, rejectCapitalwithdrawal, rejectUser, rejectWalletWithdrawal, userPackageApproval, userPackageReject, viewAddFundPending, viewAddPackageFundPending, viewAllUsers, viewWalletWithdrawPending, viewWithdrawPending } from "../controller/adminController.js"
+import { acceptUser, addAdmin, addPackage, adminLogin, approveCapitalwithdrawal, approveFundAdd, approveWalletWithdrawal, getApprovedUsers, getReadyToApproveUsers, rejectCapitalwithdrawal, rejectUser, rejectWalletWithdrawal, userPackageApproval, userPackageReject, viewAddFundPending, viewAddPackageFundPending, viewAllUsers, viewUserDetails, viewWalletWithdrawPending, viewWithdrawPending } from "../controller/adminController.js"
 import { allUserCommissionSplit } from "../controller/commissionSplit.js"
 import { directIncomeReport } from "../controller/reportController.js"
 
@@ -25,6 +25,8 @@ adminRouter.post("/user-walletWithdraw-reject/:id",protectUser,rejectWalletWithd
 
 
 adminRouter.get("/view-all-users",protectUser,viewAllUsers)
+adminRouter.get("/view-users-details/:id",protectUser,viewUserDetails)
+
 adminRouter.get("/view-approved-users",protectUser,getApprovedUsers)
 adminRouter.get("/view-ready-to-approved-users",protectUser,getReadyToApproveUsers)
 adminRouter.get("/view-addFund-pending",protectUser,viewAddFundPending)
@@ -32,7 +34,6 @@ adminRouter.get("/view-addPackageFund-pending",protectUser,viewAddPackageFundPen
 adminRouter.get("/reject-users",protectUser,rejectUser)
 adminRouter.get("/view-withdraw-pending",protectUser,viewWithdrawPending)
 adminRouter.get("/view-wallet-withdraw-pending",protectUser,viewWalletWithdrawPending)
-
 
 
 

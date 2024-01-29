@@ -381,7 +381,10 @@ export const viewUserProfile = async (req, res, next) => {
   try {
     const userData = await User.findById(userId).populate("packageChosen");
     let packageName;
+    const dailyBonus = Math.floor(userData.dailyROI);
+    const directIncome=Math.floor(userData.referalIncome)
     const packageData=userData.packageChosen;
+    const totalIncome=Math.floor(userData.walletAmount)
     if(packageData){
     packageName=packageData.name;
     }else{
@@ -391,7 +394,8 @@ export const viewUserProfile = async (req, res, next) => {
     const countFirstChild=userData.childLevel1.length;
     const countSecondChild=userData.childLevel1.length;
     const countThreeChild=userData.childLevel1.length;
-    const totalLevelRoi=userData.level1ROI+userData.level2ROI+userData.level3ROI;
+    const totalLevelRoi=Math.floor(userData.level1ROI+userData.level2ROI+userData.level3ROI);
+
 
     // .select(
     //   "username ownSponserId email phone userStatus packageAmount"
@@ -406,14 +410,14 @@ export const viewUserProfile = async (req, res, next) => {
         email: userData.email,
         phone: userData.phone,
         address: userData.address,
-        dailyBonus:userData.dailyROI,
+        dailyBonus:dailyBonus,
         levelRoi:totalLevelRoi,
         // packageAmount: user.packageAmount,
         // packageChosen: user.packageChosen,
         capitalAmount:userData.packageAmount,
         myDownline:countFirstChild,
-        directIncome:userData.referalIncome,
-        totalIncome:userData.walletAmount,
+        directIncome:directIncome,
+        totalIncome:totalIncome,
         sts: "01",
         msg: "get user profile Success",
       });
@@ -424,6 +428,8 @@ export const viewUserProfile = async (req, res, next) => {
     next(error);
   }
 };
+
+
 
 
 // edit user profile

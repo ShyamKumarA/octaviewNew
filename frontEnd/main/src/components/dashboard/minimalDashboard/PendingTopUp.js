@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Card, CardBody, CardTitle, Input, Table } from 'reactstrap';
-import { AcceptTopups, topupManage,RejectTopups } from '../../../store/packageSlice';
+import { AcceptTopups, topupManage,Rejectpackage } from '../../../store/packageSlice';
 
 
 const PendingTopUp = () => {
@@ -10,7 +10,7 @@ const PendingTopUp = () => {
 
   const { data } = useSelector((state) => state.topupManageReducer);
   const { data:acceptData } = useSelector((state) => state.acceptTopupReducer);
-  const { data:rejectData } = useSelector((state) => state.rejectTopupReducer);
+  const { data:rejectData } = useSelector((state) => state.rejectPackageReducer);
 
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const acceptHandler=(id)=>{
 }
 
 const rejectHandler=(id)=>{
-  dispatch(RejectTopups(id))
+  dispatch(Rejectpackage(id))
 }
 
   return (
